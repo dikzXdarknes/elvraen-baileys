@@ -20,6 +20,15 @@ export const attachElvraenAPI = <T extends ElvraenSocket>(sock: T) => {
 			},
 
 
+
+			sendAudio: async (
+				jid: string,
+				audio: Extract<AnyMessageContent, { audio: any }>["audio"],
+				ptt = false,
+				options: MiscMessageGenerationOptions = {}
+			) => {
+				return sock.sendMessage(jid, { audio, ptt }, options)
+			},
 			sendVideo: async (
 				jid: string,
 				video: Extract<AnyMessageContent, { video: any }>["video"],
