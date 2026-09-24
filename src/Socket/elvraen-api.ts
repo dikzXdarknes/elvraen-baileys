@@ -1,3 +1,4 @@
+import { proto } from '../../WAProto/index.js'
 import type { AnyMessageContent, MiscMessageGenerationOptions, WAMessageKey } from '../Types'
 
 type ElvraenSocket = {
@@ -123,6 +124,34 @@ export const attachElvraenAPI = <T extends ElvraenSocket>(sock: T) => {
 							selectableCount,
 						},
 					},
+					options
+				),
+
+			sendPin: async (
+				jid: string,
+				key: WAMessageKey,
+				type: proto.PinInChat.Type,
+				time?: 86400 | 604800 | 2592000,
+				options: MiscMessageGenerationOptions = {}
+			) =>
+				sock.sendMessage(
+					jid,
+					{
+						pin: key,
+						type,
+						...(time !== undefined ? { time } : {}),
+					},
+					options
+				),
+
+			sendDelete: async (
+				jid: string,
+				key: WAMessageKey,
+				options: MiscMessageGenerationOptions = {}
+			) =>
+				sock.sendMessage(
+					jid,
+					{ delete: key },
 					options
 				),
 		},
