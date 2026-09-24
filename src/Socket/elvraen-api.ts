@@ -1,5 +1,5 @@
 import { proto } from '../../WAProto/index.js'
-import type { AnyMessageContent, MiscMessageGenerationOptions, WAMessageKey } from '../Types'
+import type { AnyMessageContent, MiscMessageGenerationOptions, WAMessage, WAMessageKey } from '../Types'
 
 type ElvraenSocket = {
 	sendMessage: (
@@ -153,6 +153,30 @@ export const attachElvraenAPI = <T extends ElvraenSocket>(sock: T) => {
 					jid,
 					{ delete: key },
 					options
+				),
+
+			sendForward: async (
+				jid: string,
+				message: WAMessage,
+				force = false,
+				options: MiscMessageGenerationOptions = {}
+			) =>
+				sock.sendMessage(
+					jid,
+					{ forward: message, force },
+					options
+				),
+
+			sendReply: async (
+				jid: string,
+				text: string,
+				quoted: WAMessage,
+				options: MiscMessageGenerationOptions = {}
+			) =>
+				sock.sendMessage(
+					jid,
+					{ text },
+					{ ...options, quoted }
 				),
 		},
 	})
