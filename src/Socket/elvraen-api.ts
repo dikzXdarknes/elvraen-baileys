@@ -18,6 +18,15 @@ export const attachElvraenAPI = <T extends ElvraenSocket>(sock: T) => {
 			) => {
 				return sock.sendMessage(jid, { text }, options)
 			},
+
+			sendImage: async (
+				jid: string,
+				image: Extract<AnyMessageContent, { image: any }>["image"],
+				caption?: string,
+				options: MiscMessageGenerationOptions = {}
+			) => {
+				return sock.sendMessage(jid, { image, caption }, options)
+			},
 		},
 	})
 }
