@@ -1,15 +1,13 @@
 import { DEFAULT_CONNECTION_CONFIG } from '../Defaults'
 import type { UserFacingSocketConfig } from '../Types'
 import { makeCommunitiesSocket } from './communities'
+import { attachElvraenAPI } from './elvraen-api'
 
-// export the last socket layer
 const makeWASocket = (config: UserFacingSocketConfig) => {
-	const newConfig = {
-		...DEFAULT_CONNECTION_CONFIG,
-		...config
-	}
+	const newConfig = { ...DEFAULT_CONNECTION_CONFIG, ...config }
+	const sock = makeCommunitiesSocket(newConfig)
 
-	return makeCommunitiesSocket(newConfig)
+	return attachElvraenAPI(sock)
 }
 
 export default makeWASocket
