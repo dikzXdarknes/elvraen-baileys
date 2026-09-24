@@ -59,6 +59,14 @@ export const attachElvraenAPI = <T extends ElvraenSocket>(sock: T) => {
 			) => {
 				return sock.sendMessage(jid, { image, caption }, options)
 			},
+
+			sendSticker: async (
+				jid: string,
+				sticker: Extract<AnyMessageContent, { sticker: any }>["sticker"],
+				options: MiscMessageGenerationOptions = {}
+			) => {
+				return sock.sendMessage(jid, { sticker }, options)
+			},
 		},
 	})
 }
