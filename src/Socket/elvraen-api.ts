@@ -106,6 +106,25 @@ export const attachElvraenAPI = <T extends ElvraenSocket>(sock: T) => {
 					{ react: { text, key } },
 					options
 				),
+
+			sendPoll: async (
+				jid: string,
+				name: string,
+				values: string[],
+				selectableCount = 1,
+				options: MiscMessageGenerationOptions = {}
+			) =>
+				sock.sendMessage(
+					jid,
+					{
+						poll: {
+							name,
+							values,
+							selectableCount,
+						},
+					},
+					options
+				),
 		},
 	})
 }
