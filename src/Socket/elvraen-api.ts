@@ -1,4 +1,4 @@
-import type { AnyMessageContent, MiscMessageGenerationOptions } from '../Types'
+import type { AnyMessageContent, MiscMessageGenerationOptions, WAMessageKey } from '../Types'
 
 type ElvraenSocket = {
 	sendMessage: (
@@ -11,26 +11,29 @@ type ElvraenSocket = {
 export const attachElvraenAPI = <T extends ElvraenSocket>(sock: T) => {
 	return Object.assign(sock, {
 		elvraen: {
-			sendText: async (jid: string, text: string, options: MiscMessageGenerationOptions = {}) =>
-				sock.sendMessage(jid, { text }, options),
+			sendText: async (
+				jid: string,
+				text: string,
+				options: MiscMessageGenerationOptions = {}
+			) => sock.sendMessage(jid, { text }, options),
 
 			sendAudio: async (
 				jid: string,
-				audio: Extract<AnyMessageContent, { audio: any }>["audio"],
+				audio: Extract<AnyMessageContent, { audio: any }>['audio'],
 				ptt = false,
 				options: MiscMessageGenerationOptions = {}
 			) => sock.sendMessage(jid, { audio, ptt }, options),
 
 			sendVideo: async (
 				jid: string,
-				video: Extract<AnyMessageContent, { video: any }>["video"],
+				video: Extract<AnyMessageContent, { video: any }>['video'],
 				caption?: string,
 				options: MiscMessageGenerationOptions = {}
 			) => sock.sendMessage(jid, { video, caption }, options),
 
 			sendDocument: async (
 				jid: string,
-				document: Extract<AnyMessageContent, { document: any }>["document"],
+				document: Extract<AnyMessageContent, { document: any }>['document'],
 				mimetype: string,
 				fileName?: string,
 				options: MiscMessageGenerationOptions = {}
@@ -43,14 +46,14 @@ export const attachElvraenAPI = <T extends ElvraenSocket>(sock: T) => {
 
 			sendImage: async (
 				jid: string,
-				image: Extract<AnyMessageContent, { image: any }>["image"],
+				image: Extract<AnyMessageContent, { image: any }>['image'],
 				caption?: string,
 				options: MiscMessageGenerationOptions = {}
 			) => sock.sendMessage(jid, { image, caption }, options),
 
 			sendSticker: async (
 				jid: string,
-				sticker: Extract<AnyMessageContent, { sticker: any }>["sticker"],
+				sticker: Extract<AnyMessageContent, { sticker: any }>['sticker'],
 				options: MiscMessageGenerationOptions = {}
 			) => sock.sendMessage(jid, { sticker }, options),
 
@@ -89,6 +92,18 @@ export const attachElvraenAPI = <T extends ElvraenSocket>(sock: T) => {
 							contacts: [{ vcard }],
 						},
 					},
+					options
+				),
+
+			sendReaction: async (
+				jid: string,
+				key: WAMessageKey,
+				text: string,
+				options: MiscMessageGenerationOptions = {}
+			) =>
+				sock.sendMessage(
+					jid,
+					{ react: { text, key } },
 					options
 				),
 		},
