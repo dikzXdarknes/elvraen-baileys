@@ -19,6 +19,15 @@ export const attachElvraenAPI = <T extends ElvraenSocket>(sock: T) => {
 				return sock.sendMessage(jid, { text }, options)
 			},
 
+
+			sendVideo: async (
+				jid: string,
+				video: Extract<AnyMessageContent, { video: any }>["video"],
+				caption?: string,
+				options: MiscMessageGenerationOptions = {}
+			) => {
+				return sock.sendMessage(jid, { video, caption }, options)
+			},
 			sendImage: async (
 				jid: string,
 				image: Extract<AnyMessageContent, { image: any }>["image"],
