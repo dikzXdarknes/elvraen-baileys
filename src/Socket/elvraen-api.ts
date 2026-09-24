@@ -19,8 +19,6 @@ export const attachElvraenAPI = <T extends ElvraenSocket>(sock: T) => {
 				return sock.sendMessage(jid, { text }, options)
 			},
 
-
-
 			sendAudio: async (
 				jid: string,
 				audio: Extract<AnyMessageContent, { audio: any }>["audio"],
@@ -29,6 +27,7 @@ export const attachElvraenAPI = <T extends ElvraenSocket>(sock: T) => {
 			) => {
 				return sock.sendMessage(jid, { audio, ptt }, options)
 			},
+
 			sendVideo: async (
 				jid: string,
 				video: Extract<AnyMessageContent, { video: any }>["video"],
@@ -37,6 +36,21 @@ export const attachElvraenAPI = <T extends ElvraenSocket>(sock: T) => {
 			) => {
 				return sock.sendMessage(jid, { video, caption }, options)
 			},
+
+			sendDocument: async (
+				jid: string,
+				document: Extract<AnyMessageContent, { document: any }>["document"],
+				mimetype: string,
+				fileName?: string,
+				options: MiscMessageGenerationOptions = {}
+			) => {
+				return sock.sendMessage(
+					jid,
+					{ document, mimetype, ...(fileName ? { fileName } : {}) },
+					options
+				)
+			},
+
 			sendImage: async (
 				jid: string,
 				image: Extract<AnyMessageContent, { image: any }>["image"],
