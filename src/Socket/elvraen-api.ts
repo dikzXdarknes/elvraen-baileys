@@ -67,6 +67,28 @@ export const attachElvraenAPI = <T extends ElvraenSocket>(sock: T) => {
 			) => {
 				return sock.sendMessage(jid, { sticker }, options)
 			},
+
+			sendLocation: async (
+				jid: string,
+				latitude: number,
+				longitude: number,
+				name?: string,
+				address?: string,
+				options: MiscMessageGenerationOptions = {}
+			) => {
+				return sock.sendMessage(
+					jid,
+					{
+						location: {
+							degreesLatitude: latitude,
+							degreesLongitude: longitude,
+							...(name ? { name } : {}),
+							...(address ? { address } : {}),
+						},
+					},
+					options
+				)
+			},
 		},
 	})
 }
