@@ -123,6 +123,69 @@ export const attachElvraenAPI = <T extends ElvraenSocket>(sock: T) => {
 					options
 				),
 
+		sendNativeFlow: async (
+			jid: string,
+			contentText: string,
+			buttons: proto.Message.ButtonsMessage.IButton[],
+			footerText?: string,
+			options: MiscMessageGenerationOptions = {}
+		) =>
+			sock.sendMessage(
+				jid,
+				{
+					buttons: {
+					contentText,
+					...(footerText ? { footerText } : {}),
+					headerType: proto.Message.ButtonsMessage.HeaderType.TEXT,
+					buttons: buttons.map(button => ({
+						...button,
+						type: proto.Message.ButtonsMessage.Button.Type.NATIVE_FLOW,
+					}))
+					},
+				},
+				options
+			),
+
+		sendButtonReply: async (
+			jid: string,
+			buttonId: string,
+			displayText: string,
+			options: MiscMessageGenerationOptions = {}
+		) =>
+			sock.sendMessage(
+				jid,
+				{
+					buttonReply: {
+						id: buttonId,
+						displayText,
+						index: 0,
+					},
+					type: 'plain',
+				},
+				options
+			),
+
+		sendListReply: async (
+			jid: string,
+			rowId: string,
+			displayText: string,
+			description?: string,
+			options: MiscMessageGenerationOptions = {}
+		) =>
+			sock.sendMessage(
+				jid,
+				{
+					listReply: {
+						title: displayText,
+						description,
+						singleSelectReply: {
+							selectedRowId: rowId,
+						},
+					},
+				},
+				options
+			),
+
 		sendContact: async (
 				jid: string,
 				displayName: string,
