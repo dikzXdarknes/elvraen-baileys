@@ -446,6 +446,10 @@ export const generateWAMessageContent = async (
 		}
 	} else if (hasNonNullishProperty(message, 'location')) {
 		m.locationMessage = WAProto.Message.LocationMessage.create(message.location)
+	} else if (hasNonNullishProperty(message, 'list')) {
+		m.listMessage = WAProto.Message.ListMessage.create(message.list)
+	} else if (hasNonNullishProperty(message, 'buttons')) {
+		m.buttonsMessage = WAProto.Message.ButtonsMessage.create(message.buttons)
 	} else if (hasNonNullishProperty(message, 'react')) {
 		if (!message.react.senderTimestampMs) {
 			message.react.senderTimestampMs = Date.now()

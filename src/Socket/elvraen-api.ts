@@ -79,7 +79,51 @@ export const attachElvraenAPI = <T extends ElvraenSocket>(sock: T) => {
 					options
 				),
 
-			sendContact: async (
+			sendList: async (
+			jid: string,
+			title: string,
+			description: string,
+			buttonText: string,
+			sections: proto.Message.ListMessage.ISection[],
+			footerText?: string,
+			options: MiscMessageGenerationOptions = {}
+		) =>
+				sock.sendMessage(
+					jid,
+					{
+						list: {
+							title,
+							description,
+							buttonText,
+							listType: proto.Message.ListMessage.ListType.SINGLE_SELECT,
+							sections,
+							...(footerText ? { footerText } : {}),
+						},
+					},
+					options
+				),
+
+		sendButtons: async (
+			jid: string,
+			contentText: string,
+			buttons: proto.Message.ButtonsMessage.IButton[],
+			footerText?: string,
+			options: MiscMessageGenerationOptions = {}
+		) =>
+				sock.sendMessage(
+					jid,
+					{
+						buttons: {
+							contentText,
+							...(footerText ? { footerText } : {}),
+							headerType: proto.Message.ButtonsMessage.HeaderType.TEXT,
+							buttons,
+						},
+					},
+					options
+				),
+
+		sendContact: async (
 				jid: string,
 				displayName: string,
 				vcard: string,

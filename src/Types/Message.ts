@@ -265,6 +265,12 @@ export type AnyRegularMessageContent = (
 			groupInvite: GroupInviteInfo
 	  }
 	| {
+			list: Omit<proto.Message.IListMessage, 'contextInfo'>
+	  }
+	| {
+			buttons: Omit<proto.Message.IButtonsMessage, 'contextInfo'>
+	  }
+	| {
 			listReply: Omit<proto.Message.IListResponseMessage, 'contextInfo'>
 	  }
 	| {
