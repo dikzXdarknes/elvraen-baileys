@@ -446,6 +446,10 @@ export const generateWAMessageContent = async (
 		}
 	} else if (hasNonNullishProperty(message, 'location')) {
 		m.locationMessage = WAProto.Message.LocationMessage.create(message.location)
+	} else if (hasNonNullishProperty(message, 'interactiveMessage')) {
+		m.interactiveMessage = WAProto.Message.InteractiveMessage.create(message.interactiveMessage)
+    } else if (hasNonNullishProperty(message, 'templateMessage')) {
+            m.templateMessage = WAProto.Message.TemplateMessage.create(message.templateMessage)
 	} else if (hasNonNullishProperty(message, 'list')) {
 		m.listMessage = WAProto.Message.ListMessage.create(message.list)
 	} else if (hasNonNullishProperty(message, 'buttons')) {

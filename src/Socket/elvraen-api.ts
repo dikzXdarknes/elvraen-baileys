@@ -123,6 +123,98 @@ export const attachElvraenAPI = <T extends ElvraenSocket>(sock: T) => {
 					options
 				),
 
+		sendCTA: async (
+			jid: string,
+			bodyText: string,
+			buttonName: string,
+			buttonParamsJson: string,
+			headerTitle?: string,
+			footerText?: string,
+			options: MiscMessageGenerationOptions = {}
+		) =>
+			sock.sendMessage(
+				jid,
+				{
+					interactiveMessage: {
+						body: { text: bodyText },
+						...(headerTitle ? { header: { title: headerTitle } } : {}),
+						...(footerText ? { footer: { text: footerText } } : {}),
+						nativeFlowMessage: {
+							buttons: [{ name: buttonName, buttonParamsJson }],
+						},
+					},
+				},
+				options
+			),
+
+		sendCarousel: async (
+			jid: string,
+			cards: proto.Message.IInteractiveMessage[],
+			messageVersion: number = 1,
+			carouselCardType: proto.Message.InteractiveMessage.CarouselMessage.CarouselCardType = proto.Message.InteractiveMessage.CarouselMessage.CarouselCardType.HSCROLL_CARDS,
+			options: MiscMessageGenerationOptions = {}
+		) =>
+			sock.sendMessage(
+				jid,
+				{
+					interactiveMessage: {
+						carouselMessage: {
+							cards,
+							messageVersion,
+							carouselCardType,
+						},
+					},
+				},
+				options
+			),
+
+		sendTemplate: async (
+			jid: string,
+			contentText: string,
+			buttons: proto.IHydratedTemplateButton[],
+			footerText?: string,
+			titleText?: string,
+			templateId?: string,
+			options: MiscMessageGenerationOptions = {}
+		) =>
+			sock.sendMessage(
+				jid,
+				{
+					templateMessage: {
+						hydratedFourRowTemplate: {
+							hydratedContentText: contentText,
+							...(footerText ? { hydratedFooterText: footerText } : {}),
+							...(titleText ? { hydratedTitleText: titleText } : {}),
+							...(templateId ? { templateId } : {}),
+							hydratedButtons: buttons,
+						},
+					},
+				},
+				options
+			),
+
+		sendInteractive: async (
+			jid: string,
+			bodyText: string,
+			buttons: proto.Message.InteractiveMessage.NativeFlowMessage.INativeFlowButton[],
+			headerTitle?: string,
+			headerSubtitle?: string,
+			footerText?: string,
+			options: MiscMessageGenerationOptions = {}
+		) =>
+			sock.sendMessage(
+				jid,
+				{
+					interactiveMessage: {
+						body: { text: bodyText },
+						...(headerTitle || headerSubtitle ? { header: { ...(headerTitle ? { title: headerTitle } : {}), ...(headerSubtitle ? { subtitle: headerSubtitle } : {}) } } : {}),
+						...(footerText ? { footer: { text: footerText } } : {}),
+						nativeFlowMessage: { buttons },
+					},
+				},
+				options
+			),
+
 		sendNativeFlow: async (
 			jid: string,
 			contentText: string,
