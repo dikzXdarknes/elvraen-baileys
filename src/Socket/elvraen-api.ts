@@ -1,3 +1,4 @@
+
 import { proto } from '../../WAProto/index.js'
 import type { AnyMessageContent, LastMessageList, MiscMessageGenerationOptions, WAMessage, WAMessageKey } from '../Types'
 import type { makeCommunitiesSocket } from './communities'
@@ -33,7 +34,6 @@ type ElvraenSocket = Pick<
 	| 'addOrEditQuickReply'
 	| 'removeQuickReply'
 >
-
 type Opts = MiscMessageGenerationOptions
 type StarKey = { id: string; fromMe?: boolean }
 type MediaOf<K extends string> = Extract<AnyMessageContent, Record<K, any>>[K]
@@ -44,7 +44,6 @@ const buildElvraenAPI = (sock: ElvraenSocket) => ({
 
 	getProfilePicture: async (jid: string, type: 'preview' | 'image' = 'preview', timeoutMs?: number) =>
 		sock.profilePictureUrl(jid, type, timeoutMs),
-
 	getStatus: async (...jids: string[]) => sock.fetchStatus(...jids),
 
 	getBlocklist: async () => sock.fetchBlocklist(),
@@ -57,7 +56,6 @@ const buildElvraenAPI = (sock: ElvraenSocket) => ({
 
 	addOrEditContact: async (jid: string, contact: Parameters<ElvraenSocket['addOrEditContact']>[1]) =>
 		sock.addOrEditContact(jid, contact),
-
 	removeContact: async (jid: string) => sock.removeContact(jid),
 
 	// ---- Label dan quick reply ----
@@ -66,7 +64,6 @@ const buildElvraenAPI = (sock: ElvraenSocket) => ({
 	addChatLabel: async (jid: string, labelId: string) => sock.addChatLabel(jid, labelId),
 
 	removeChatLabel: async (jid: string, labelId: string) => sock.removeChatLabel(jid, labelId),
-
 	addMessageLabel: async (jid: string, messageId: string, labelId: string) =>
 		sock.addMessageLabel(jid, messageId, labelId),
 
@@ -156,8 +153,9 @@ const buildElvraenAPI = (sock: ElvraenSocket) => ({
 	sendReply: async (jid: string, text: string, quoted: WAMessage, options: Opts = {}) =>
 		sock.sendMessage(jid, { text }, { ...options, quoted }),
 
+	// Perbaikan typing untuk editMessage.
 	editMessage: async (jid: string, key: WAMessageKey, content: AnyMessageContent, options: Opts = {}) =>
-		sock.sendMessage(jid, { ...content, edit: key }, options),
+		sock.sendMessage(jid, { ...content, edit: key } as AnyMessageContent, options),
 
 	sendStatus: async (content: AnyMessageContent, options: Opts = {}) =>
 		sock.sendMessage('status@broadcast', content, options),
@@ -367,4 +365,5 @@ export const attachElvraenAPI = <T extends ElvraenSocket>(sock: T): T & { elvrae
 	}
 
 	return target as T & { elvraen: ElvraenAPI }
-}
+										}
+		
